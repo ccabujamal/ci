@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#2a1268" />
+<title>اختبار التربية المدنية الأمريكية 2025 • US Civics Quiz</title>
+<style>
+:root {
+  --bg: #2a1268; --bg2: #1a0a44; --cyan: #2ef0d8; --gold: #ffe566;
+  --ok: #2ee59d; --bad: #ff5c7a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Segoe UI", "Noto Naskh Arabic", "Amiri", Tahoma, system-ui, sans-serif;
+  color: #fff;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, #5b21b6 0%, transparent 55%),
+    radial-gradient(900px 500px at 110% 10%, #db2777 0%, transparent 50%),
+    linear-gradient(180deg, var(--bg), var(--bg2));
+  min-height: 100vh;
+}
+button { font-family: inherit; }
+.wrap { min-height: 100vh; display: grid; place-items: center; padding: 20px; }
+.card {
+  width: min(520px, 100%);
+  background: linear-gradient(180deg, #6d35d4, #5428b0);
+  border: 3px solid var(--cyan); border-radius: 28px;
+  padding: 30px 24px 24px; box-shadow: 0 18px 50px rgba(0,0,0,.35);
+}
+.logo { text-align: center; font-size: 1.75rem; font-weight: 800; color: var(--gold); line-height: 1.35; }
+.tag { text-align: center; color: #d4c4f5; margin: 8px 0 18px; font-size: .95rem; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; border: none; border-radius: 16px; padding: 14px 18px;
+  font-weight: 800; font-size: 1.05rem; color: #fff; cursor: pointer;
+  background: linear-gradient(180deg, #ff5d90, #ff2d70);
+  box-shadow: 0 8px 0 #c21650; margin-top: 12px; transition: transform .1s;
+}
+.btn:active { transform: translateY(3px); box-shadow: 0 4px 0 #c21650; }
+.btn.ghost { background: transparent; box-shadow: none; border: 2px solid rgba(255,255,255,.25); }
+.btn.tiny { width: auto; padding: 9px 14px; margin: 0; font-size: .88rem; box-shadow: 0 4px 0 #c21650; }
+.btn.ok { background: linear-gradient(180deg, #2ee59d, #1bbf7a); box-shadow: 0 6px 0 #0e8a55; }
+.btn.sec { background: linear-gradient(180deg, #7c5cff, #5b3fd4); box-shadow: 0 6px 0 #3d2a9e; }
+
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: calc(12px + env(safe-area-inset-top,0)) 16px 12px;
+  background: rgba(20,6,50,.92); position: sticky; top: 0; z-index: 10; gap: 10px; flex-wrap: wrap;
+}
+.brand { font-weight: 800; font-size: 1.1rem; color: var(--gold); flex: 1; min-width: 0; }
+.topbar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.btn.ghost {
+  background: rgba(255,255,255,.08) !important;
+  box-shadow: none !important;
+  border: 2px solid rgba(255,255,255,.35) !important;
+  color: #fff !important;
+}
+.btn.ghost:active { background: rgba(255,255,255,.15) !important; }
+.page { max-width: 720px; margin: 0 auto; padding: 16px 14px 70px; }
+
+.lang-switch { display: flex; gap: 8px; justify-content: center; margin-bottom: 16px; }
+.lang-btn {
+  padding: 8px 18px; border-radius: 999px; border: 2px solid rgba(255,255,255,.2);
+  background: rgba(0,0,0,.25); color: #fff; font-weight: 700; cursor: pointer; font-size: .92rem;
+}
+.lang-btn.active { border-color: var(--cyan); background: rgba(46,240,216,.18); color: var(--cyan); }
+
+.modes { display: grid; gap: 11px; margin-top: 6px; }
+.mode {
+  background: rgba(0,0,0,.22); border: 2px solid rgba(255,255,255,.12);
+  border-radius: 18px; padding: 15px 16px; cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.mode:hover, .mode.active { border-color: var(--cyan); background: rgba(46,240,216,.08); }
+.mode h3 { font-size: 1.08rem; margin-bottom: 4px; }
+.mode p { color: #d4c4f5; font-size: .87rem; line-height: 1.45; }
+
+.qcard {
+  background: linear-gradient(180deg, #6d35d4, #4a1d98);
+  border: 3px solid var(--cyan); border-radius: 24px; padding: 22px 18px;
+}
+.qcard h2 { font-size: 1.22rem; margin-bottom: 16px; line-height: 1.5; }
+.options { display: grid; gap: 10px; }
+.option {
+  background: rgba(0,0,0,.22); border: 2px solid rgba(255,255,255,.14);
+  color: #fff; border-radius: 14px; padding: 13px 14px; font-weight: 700;
+  cursor: pointer; transition: .15s; line-height: 1.4;
+}
+.option:hover:not(:disabled) { border-color: var(--cyan); }
+.option.correct { background: rgba(46,229,157,.28); border-color: var(--ok); }
+.option.wrong { background: rgba(255,92,122,.25); border-color: var(--bad); }
+.option:disabled { cursor: default; }
+.feedback { margin-top: 14px; font-weight: 800; min-height: 26px; font-size: 1.05rem; }
+.bar { height: 10px; background: rgba(255,255,255,.12); border-radius: 99px; overflow: hidden; margin: 10px 0 14px; }
+.bar > span { display: block; height: 100%; background: linear-gradient(90deg, var(--cyan), #7c5cff); transition: width .3s; }
+
+.stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin: 16px 0; }
+.stat { background: rgba(255,255,255,.08); border-radius: 16px; padding: 14px; text-align: center; }
+.stat b { display: block; font-size: 1.4rem; color: var(--gold); }
+.result { text-align: center; padding: 18px 6px; }
+.badge {
+  display: inline-block; background: rgba(46,240,216,.18); color: var(--cyan);
+  border-radius: 999px; padding: 3px 10px; font-size: .8rem; font-weight: 800;
+}
+.hint {
+  margin-top: 14px; font-size: .82rem; color: #d4c4f5;
+  background: rgba(0,0,0,.18); border-radius: 12px; padding: 10px 12px; line-height: 1.5;
+}
+.footer-note { text-align: center; color: #a78bfa; font-size: .78rem; margin-top: 22px; line-height: 1.5; }
+.progress-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: .93rem; gap: 8px; flex-wrap: wrap; }
+
+/* Direction helpers */
+[dir="rtl"] .option, [dir="rtl"] .mode { text-align: right; }
+[dir="ltr"] .option, [dir="ltr"] .mode { text-align: left; }
+[dir="ltr"] .logo { font-size: 1.7rem; }
+
+@media (max-width: 500px) {
+  .stats { grid-template-columns: 1fr 1fr; }
+  .logo { font-size: 1.5rem; }
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+// ========== UI STRINGS ==========
+const STR = {
+  ar: {
+    title: "اختبار التربية المدنية الأمريكية",
+    subtitle: "128 سؤالاً رسمياً • نسخة 2025",
+    modeReal: "محاكاة الاختبار الحقيقي",
+    modeRealDesc: "20 سؤالاً عشوائياً (مثل مقابلة USCIS). النجاح بـ 12 إجابة صحيحة.",
+    modeStar: "الاعتبار الخاص 65/20",
+    modeStarDesc: "الأسئلة المميزة ★ فقط. لمن عمره 65+ وأقام 20 سنة. النجاح بـ 6 من 10.",
+    modeFull: "تدريب كامل (كل 128)",
+    modeFullDesc: "ادرس كل الأسئلة. مناسب للتحضير الشامل.",
+    modeSection: "التدريب حسب القسم",
+    modeSectionDesc: "ركّز على موضوع واحد في كل مرة.",
+    chooseSection: "اختر قسماً:",
+    note: "ملاحظة: بعض الإجابات تتغير (الرئيس، نائب الرئيس، أعضاء مجلس الشيوخ...). تحقق دائماً من",
+    noteLink: "uscis.gov/citizenship/testupdates",
+    footer: "مبني على المواد الرسمية لـ USCIS • غير تابع لـ USCIS",
+    question: "سؤال",
+    of: "من",
+    correct: "صحيحة",
+    exit: "خروج",
+    correctMsg: "✅ إجابة صحيحة!",
+    wrongMsg: "❌ الإجابة الصحيحة مظللة.",
+    wellDone: "أحسنت!",
+    keepGoing: "استمر!",
+    score: "النتيجة",
+    passedSim: "لقد نجحت في محاكاة الاختبار!",
+    needMore: "تحتاج إلى 12 من 20 للنجاح. استمر في التدريب.",
+    passed65: "لقد نجحت في مستوى الاعتبار الخاص 65/20!",
+    need6: "تحتاج إلى 6 إجابات صحيحة على الأقل من 10.",
+    greatJob: "عمل رائع!",
+    reviewMissed: "راجع الأسئلة التي أخطأت فيها وحاول مجدداً.",
+    correctCount: "صحيحة",
+    missedCount: "خاطئة",
+    accuracy: "الدقة",
+    tryAgain: "حاول نفس الوضع مجدداً",
+    differentMode: "اختر وضعاً مختلفاً",
+    reviewBtn: "مراجعة الأسئلة الخاطئة",
+    reviewTitle: "الأسئلة التي أخطأت فيها",
+    perfect: "نتيجة كاملة — لا شيء للمراجعة! 🎉",
+    done: "تم",
+    back: "رجوع",
+    home: "الرئيسية",
+    confirmExit: "هل تريد الخروج؟ ستفقد تقدمك الحالي.",
+    starred: "★ مميز"
+  },
+  en: {
+    title: "US Civics Quiz",
+    subtitle: "128 Official Questions • 2025 Version",
+    modeReal: "Real Test Simulation",
+    modeRealDesc: "20 random questions (like the real USCIS interview). Pass with 12 correct.",
+    modeStar: "65/20 Special Consideration",
+    modeStarDesc: "Only the starred ★ questions. For applicants 65+ with 20 years as LPR. Pass with 6/10.",
+    modeFull: "Full Practice (All 128)",
+    modeFullDesc: "Study every question. Great for thorough preparation.",
+    modeSection: "Practice by Section",
+    modeSectionDesc: "Focus on one topic at a time.",
+    chooseSection: "Choose a section:",
+    note: "Note: Some answers change (President, Vice President, your senators...). Always check",
+    noteLink: "uscis.gov/citizenship/testupdates",
+    footer: "Based on official USCIS material • Not affiliated with USCIS",
+    question: "Question",
+    of: "of",
+    correct: "correct",
+    exit: "Exit",
+    correctMsg: "✅ Correct!",
+    wrongMsg: "❌ The correct answer is highlighted.",
+    wellDone: "Well done!",
+    keepGoing: "Keep going!",
+    score: "Score",
+    passedSim: "You passed the simulated test!",
+    needMore: "Keep practicing — you need 12/20 to pass.",
+    passed65: "You passed the 65/20 special consideration level!",
+    need6: "You need at least 6 correct out of 10.",
+    greatJob: "Great job!",
+    reviewMissed: "Review the ones you missed and try again.",
+    correctCount: "Correct",
+    missedCount: "Missed",
+    accuracy: "Accuracy",
+    tryAgain: "Try Same Mode Again",
+    differentMode: "Choose Different Mode",
+    reviewBtn: "Review Missed Questions",
+    reviewTitle: "Missed Questions",
+    perfect: "Perfect score — nothing to review! 🎉",
+    done: "Done",
+    back: "Back",
+    home: "Home",
+    confirmExit: "Exit this quiz? Your progress will be lost.",
+    starred: "★ Starred"
+  }
+};
+
+// ========== ALL 128 QUESTIONS (bilingual) ==========
+const QUESTIONS = [
+  // 1-15 Principles
+  {id:1, section:{ar:"مبادئ الحكومة الأمريكية",en:"Principles of American Government"}, q:{ar:"ما هو شكل حكومة الولايات المتحدة؟",en:"What is the form of government of the United States?"}, options:{ar:["جمهورية / جمهورية فيدرالية قائمة على الدستور / ديمقراطية تمثيلية","ملكية","ديمقراطية مباشرة فقط","أوليغارشية"],en:["Republic / Constitution-based federal republic / Representative democracy","Monarchy","Direct democracy only","Oligarchy"]}, correct:0, star:false},
+  {id:2, section:{ar:"مبادئ الحكومة الأمريكية",en:"Principles of American Government"}, q:{ar:"ما هو القانون الأعلى في البلاد؟",en:"What is the supreme law of the land?"}, options:{ar:["الدستور (الأمريكي)","إعلان الاستقلال","وثيقة الحقوق","الأوراق الفيدرالية"],en:["(U.S.) Constitution","Declaration of Independence","Bill of Rights","Federalist Papers"]}, correct:0, star:true},
+  {id:3, section:{ar:"مبادئ الحكومة الأمريكية",en:"Principles of American Government"}, q:{ar:"اذكر شيئاً واحداً يفعله الدستور الأمريكي.",en:"Name one thing the U.S. Constitution does."}, options:{ar:["يُشكّل الحكومة / يُحدد سلطات الحكومة / يحمي حقوق الشعب","يعلن الاستقلال عن بريطانيا","ينشئ الأحزاب السياسية","يؤسس البنك الوطني"],en:["Forms the government / Defines powers of government / Protects the rights of the people","Declares independence from Britain","Creates the first political parties","Establishes the national bank"]}, correct:0, star:false},
+  {id:4, section:{ar:"مبادئ الحكومة الأمريكية",en:"Principles of American Government"}, q:{ar:"يبدأ الدستور الأمريكي بكلمات «نحن الشعب». ماذا تعني «نحن الشعب»؟",en:"The U.S. Constitution starts with the words “We the People.” What does “We the People” mean?"}, options:{ar:["الحكم الذاتي / السيادة الشعبية / موافقة المحكومين","الرئيس هو مصدر السلطة","الأثرياء فقط يمكنهم التصويت","الولايات لديها كل السلطة"],en:["Self-government / Popular sovereignty / Consent of the governed","The President is the source of power","Only wealthy people can vote","States have all the power"]}, correct:0, star:false},
+  {id:5, section:{ar:"مبادئ الحكومة الأمريكية",en:"Principles of American Government"}, q:{ar:"كيف تُجرى التغييرات على الدستور الأمريكي؟",en:"How are changes made to the U.S. Constitution?"}, options:{ar:["التعديلات / عملية التعديل","من قبل الرئيس وحده","من قبل المحكمة العليا","بالتصويت الشعبي فقط"],en:["Amendments / The amendment process","By the President alone","By the Supreme Court","By popular vote only"]}, correct:0, star:false},
+  {id:6, section:{ar:"مبادئ الحكومة الأمريكية",en:"Principles of American Government"}, q:{ar:"ماذا تحمي وثيقة الحقوق؟",en:"What does the Bill of Rights protect?"}, options:{ar:["الحقوق الأساسية للأمريكيين / للأشخاص المقيمين في الولايات المتحدة","حقوق المسؤولين الحكوميين فقط","حكومات الولايات من الحكومة الفيدرالية","الشركات من التنظيم"],en:["(The basic) rights of Americans / people living in the United States","Only the rights of government officials","State governments from the federal government","Businesses from regulation"]}, correct:0, star:false},
+  {id:7, section:{ar:"مبادئ الحكومة الأمريكية",en:"Principles of American Government"}, q:{ar:"كم عدد التعديلات في الدستور الأمريكي؟",en:"How many amendments does the U.S. Constitution have?"}, options:{ar:["سبعة وعشرون (27)","عشرة (10)","واحد وعشرون (21)","خمسون (50)"],en:["Twenty-seven (27)","Ten (10)","Twenty-one (21)","Fifty (50)"]}, correct:0, star:true},
+  {id:8, section:{ar:"مبادئ الحكومة الأمريكية",en:"Principles of American Government"}, q:{ar:"لماذا يُعد إعلان الاستقلال مهماً؟",en:"Why is the Declaration of Independence important?"}, options:{ar:["يقول إن أمريكا حرة من السيطرة البريطانية / جميع الناس خُلقوا متساوين / يحدد الحقوق المتأصلة","أنشأ أول دستور","أنهى الحرب الأهلية","أسس المحكمة العليا"],en:["It says America is free from British control / all people are created equal / identifies inherent rights","It created the first Constitution","It ended the Civil War","It established the Supreme Court"]}, correct:0, star:false},
+  {id:9, section:{ar:"مبادئ الحكومة الأمريكية",en:"Principles of American Government"}, q:{ar:"أي وثيقة تأسيسية قالت إن المستعمرات الأمريكية حرة من بريطانيا؟",en:"What founding document said the American colonies were free from Britain?"}, options:{ar:["إعلان الاستقلال","الدستور الأمريكي","مواد الاتحاد","وثيقة الحقوق"],en:["Declaration of Independence","U.S. Constitution","Articles of Confederation","Bill of Rights"]}, correct:0, star:false},
+  {id:10, section:{ar:"مبادئ الحكومة الأمريكية",en:"Principles of American Government"}, q:{ar:"اذكر فكرتين مهمتين من إعلان الاستقلال والدستور الأمريكي.",en:"Name two important ideas from the Declaration of Independence and the U.S. Constitution."}, options:{ar:["المساواة / الحرية / العقد الاجتماعي / الحقوق الطبيعية / الحكومة المحدودة / الحكم الذاتي","الملكية والحق الإلهي","سلطة حكومية غير محدودة","الأثرياء فقط لديهم حقوق"],en:["Equality / Liberty / Social contract / Natural rights / Limited government / Self-government","Monarchy and divine right","Unlimited government power","Only the rich have rights"]}, correct:0, star:false},
+  {id:11, section:{ar:"مبادئ الحكومة الأمريكية",en:"Principles of American Government"}, q:{ar:"كلمات «الحياة والحرية والسعي وراء السعادة» موجودة في أي وثيقة تأسيسية؟",en:"The words “Life, Liberty, and the pursuit of Happiness” are in what founding document?"}, options:{ar:["إعلان الاستقلال","الدستور الأمريكي","وثيقة الحقوق","الأوراق الفيدرالية"],en:["Declaration of Independence","U.S. Constitution","Bill of Rights","Federalist Papers"]}, correct:0, star:false},
+  {id:12, section:{ar:"مبادئ الحكومة الأمريكية",en:"Principles of American Government"}, q:{ar:"ما هو النظام الاقتصادي في الولايات المتحدة؟",en:"What is the economic system of the United States?"}, options:{ar:["الرأسمالية / اقتصاد السوق الحر","الشيوعية","الاشتراكية فقط","المركنتيلية"],en:["Capitalism / Free market economy","Communism","Socialism only","Mercantilism"]}, correct:0, star:true},
+  {id:13, section:{ar:"مبادئ الحكومة الأمريكية",en:"Principles of American Government"}, q:{ar:"ما هو حكم القانون؟",en:"What is the rule of law?"}, options:{ar:["يجب على الجميع اتباع القانون / يجب على القادة طاعة القانون / لا أحد فوق القانون","المواطنون فقط يجب أن يتبعوا القانون","الرئيس فوق القانون","القوانين تنطبق على الولايات فقط"],en:["Everyone must follow the law / Leaders must obey the law / No one is above the law","Only citizens must follow the law","The President is above the law","Laws apply only to the states"]}, correct:0, star:false},
+  {id:14, section:{ar:"مبادئ الحكومة الأمريكية",en:"Principles of American Government"}, q:{ar:"أثرت وثائق كثيرة على الدستور الأمريكي. اذكر واحدة.",en:"Many documents influenced the U.S. Constitution. Name one."}, options:{ar:["إعلان الاستقلال / مواد الاتحاد / الأوراق الفيدرالية / ميثاق ماي فلاور","الماغنا كارتا فقط","البيان الشيوعي","معاهدة فرساي"],en:["Declaration of Independence / Articles of Confederation / Federalist Papers / Mayflower Compact","Magna Carta only","Communist Manifesto","Treaty of Versailles"]}, correct:0, star:false},
+  {id:15, section:{ar:"مبادئ الحكومة الأمريكية",en:"Principles of American Government"}, q:{ar:"هناك ثلاثة فروع للحكومة. لماذا؟",en:"There are three branches of government. Why?"}, options:{ar:["حتى لا يصبح جزء واحد قوياً جداً / الضوابط والتوازنات / فصل السلطات","لجعل الحكومة أبطأ","لإعطاء المزيد من السلطة للرئيس","لأن بريطانيا كانت لديها ثلاثة فروع"],en:["So one part does not become too powerful / Checks and balances / Separation of powers","To make government slower","To give more power to the President","Because Britain had three branches"]}, correct:0, star:false},
+
+  // 16-62 System of Government
+  {id:16, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"سمِّ الفروع الثلاثة للحكومة.",en:"Name the three branches of government."}, options:{ar:["التشريعي والتنفيذي والقضائي","العسكري والتنفيذي والقضائي","التشريعي والديني والقضائي","التنفيذي والولائي والمحلي"],en:["Legislative, executive, and judicial","Military, executive, and judicial","Legislative, religious, and judicial","Executive, state, and local"]}, correct:0, star:false},
+  {id:17, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"رئيس الولايات المتحدة مسؤول عن أي فرع من فروع الحكومة؟",en:"The President of the United States is in charge of which branch of government?"}, options:{ar:["الفرع التنفيذي","الفرع التشريعي","الفرع القضائي","فرع الولايات"],en:["Executive branch","Legislative branch","Judicial branch","State branch"]}, correct:0, star:false},
+  {id:18, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"أي جزء من الحكومة الفيدرالية يكتب القوانين؟",en:"What part of the federal government writes laws?"}, options:{ar:["الكونغرس (الأمريكي) / الفرع التشريعي","الرئيس","المحكمة العليا","مجلس الوزراء"],en:["(U.S.) Congress / Legislative branch","The President","The Supreme Court","The Cabinet"]}, correct:0, star:false},
+  {id:19, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"ما هما الجزءان اللذان يتكون منهما الكونغرس الأمريكي؟",en:"What are the two parts of the U.S. Congress?"}, options:{ar:["مجلس الشيوخ ومجلس النواب","مجلس الشيوخ والمحكمة العليا","مجلس النواب ومجلس الوزراء","مجلس الشيوخ والرئيس"],en:["Senate and House (of Representatives)","Senate and Supreme Court","House and Cabinet","Senate and President"]}, correct:0, star:false},
+  {id:20, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"اذكر سلطة واحدة من سلطات الكونغرس الأمريكي.",en:"Name one power of the U.S. Congress."}, options:{ar:["يكتب القوانين / يعلن الحرب / يضع الميزانية الفيدرالية","يعيّن قضاة المحكمة العليا وحده","يقود الجيش","ينقض قوانينه الخاصة"],en:["Writes laws / Declares war / Makes the federal budget","Appoints Supreme Court justices alone","Commands the military","Vetoes its own bills"]}, correct:0, star:true},
+  {id:21, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"كم عدد أعضاء مجلس الشيوخ الأمريكي؟",en:"How many U.S. senators are there?"}, options:{ar:["مائة (100)","خمسون (50)","أربعمائة وخمسة وثلاثون (435)","تسعة (9)"],en:["One hundred (100)","Fifty (50)","Four hundred thirty-five (435)","Nine (9)"]}, correct:0, star:false},
+  {id:22, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"كم مدة ولاية عضو مجلس الشيوخ الأمريكي؟",en:"How long is a term for a U.S. senator?"}, options:{ar:["ست (6) سنوات","سنتان (2)","أربع (4) سنوات","مدى الحياة"],en:["Six (6) years","Two (2) years","Four (4) years","For life"]}, correct:0, star:false},
+  {id:23, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"من هو أحد عضوي مجلس الشيوخ عن ولايتك حالياً؟",en:"Who is one of your state’s U.S. senators now?"}, options:{ar:["تود يونغ","الرئيس","الحاكم","رئيس مجلس النواب"],en:["Todd Young","The President","The Governor","The Speaker of the House"]}, correct:0, star:false},
+  {id:24, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"كم عدد الأعضاء المصوّتين في مجلس النواب؟",en:"How many voting members are in the House of Representatives?"}, options:{ar:["أربعمائة وخمسة وثلاثون (435)","مائة (100)","خمسون (50)","تسعة (9)"],en:["Four hundred thirty-five (435)","One hundred (100)","Fifty (50)","Nine (9)"]}, correct:0, star:false},
+  {id:25, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"كم مدة ولاية عضو مجلس النواب؟",en:"How long is a term for a member of the House of Representatives?"}, options:{ar:["سنتان (2)","أربع (4) سنوات","ست (6) سنوات","مدى الحياة"],en:["Two (2) years","Four (4) years","Six (6) years","For life"]}, correct:0, star:false},
+  {id:26, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"لماذا يخدم ممثلو مجلس النواب لفترات أقصر من أعضاء مجلس الشيوخ؟",en:"Why do U.S. representatives serve shorter terms than U.S. senators?"}, options:{ar:["ليتبعوا الرأي العام بشكل أقرب","لأنهم أقل أهمية","لتوفير المال","لأن الدستور يفرض ذلك بلا سبب"],en:["To more closely follow public opinion","Because they are less important","To save money","Because the Constitution requires it for no reason"]}, correct:0, star:false},
+  {id:27, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"كم عدد أعضاء مجلس الشيوخ لكل ولاية؟",en:"How many senators does each state have?"}, options:{ar:["اثنان (2)","واحد (1)","حسب عدد السكان","ثلاثة (3)"],en:["Two (2)","One (1)","Based on population","Three (3)"]}, correct:0, star:false},
+  {id:28, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"لماذا لكل ولاية عضوان في مجلس الشيوخ؟",en:"Why does each state have two senators?"}, options:{ar:["التمثيل المتساوي (للولايات الصغيرة) / التسوية الكبرى","لأن العدد الإجمالي 50 فقط","ليطابق عدد النواب","كان قراراً مؤقتاً"],en:["Equal representation (for small states) / The Great Compromise","Because there are only 50 senators total","To match the number of representatives","It was a temporary decision"]}, correct:0, star:false},
+  {id:29, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"ما اسم ممثلك في مجلس النواب؟",en:"Name your U.S. representative."}, options:{ar:["مارلين ستوتزمان","نائب الرئيس","رئيس المحكمة العليا","أي عضو في مجلس الشيوخ"],en:["Marlin Stutzman","The Vice President","The Chief Justice","Any U.S. Senator"]}, correct:0, star:false},
+  {id:30, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"ما اسم رئيس مجلس النواب حالياً؟",en:"What is the name of the Speaker of the House of Representatives now?"}, options:{ar:["جونسون","لا يتغير أبداً","نائب الرئيس","رئيس المحكمة العليا"],en:["Johnson","It never changes","The Vice President","The Chief Justice"]}, correct:0, star:true},
+  {id:31, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"من يمثّله عضو مجلس الشيوخ الأمريكي؟",en:"Who does a U.S. senator represent?"}, options:{ar:["مواطني ولايته / سكان ولايته","فقط سكان دائرته","البلد بأكمله","حزبه السياسي فقط"],en:["Citizens of their state / People of their state","Only people in their district","The entire country","Only their political party"]}, correct:0, star:false},
+  {id:32, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"من ينتخب أعضاء مجلس الشيوخ؟",en:"Who elects U.S. senators?"}, options:{ar:["مواطنو ولايتهم","الرئيس","مجلس النواب","حكام الولايات"],en:["Citizens from their state","The President","The House of Representatives","State governors"]}, correct:0, star:false},
+  {id:33, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"من يمثّله عضو مجلس النواب؟",en:"Who does a member of the House of Representatives represent?"}, options:{ar:["مواطني دائرته الانتخابية","الولاية بأكملها","البلد بأكمله","أعضاء حزبه فقط"],en:["Citizens in their (congressional) district","The entire state","The whole country","Only their party members"]}, correct:0, star:false},
+  {id:34, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"من ينتخب أعضاء مجلس النواب؟",en:"Who elects members of the House of Representatives?"}, options:{ar:["مواطنو دائرتهم الانتخابية","جميع مواطني الولاية","مجلس الشيوخ","الرئيس"],en:["Citizens from their (congressional) district","All citizens of the state","The Senate","The President"]}, correct:0, star:false},
+  {id:35, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"بعض الولايات لديها ممثلون أكثر من غيرها. لماذا؟",en:"Some states have more representatives than other states. Why?"}, options:{ar:["بسبب عدد سكان الولاية / لأن لديها عدداً أكبر من السكان","لأنها ولايات أقدم","بسبب عدد أعضاء مجلس الشيوخ","الأمر عشوائي"],en:["(Because of) the state’s population / they have more people","Because they are older states","Because of the number of senators","It is random"]}, correct:0, star:false},
+  {id:36, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"يُنتخب رئيس الولايات المتحدة لمدة كم سنة؟",en:"The President of the United States is elected for how many years?"}, options:{ar:["أربع (4) سنوات","سنتان (2)","ست (6) سنوات","مدى الحياة"],en:["Four (4) years","Two (2) years","Six (6) years","For life"]}, correct:0, star:true},
+  {id:37, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"لا يمكن لرئيس الولايات المتحدة أن يخدم إلا فترتين. لماذا؟",en:"The President of the United States can serve only two terms. Why?"}, options:{ar:["بسبب التعديل الثاني والعشرين / لمنع الرئيس من أن يصبح قوياً جداً","هو تقليد فقط","المحكمة العليا قررت ذلك","الكونغرس يصوّت في كل مرة"],en:["(Because of) the 22nd Amendment / To keep the president from becoming too powerful","It is a tradition only","The Supreme Court decided it","Congress votes on it each time"]}, correct:0, star:false},
+  {id:38, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"ما اسم رئيس الولايات المتحدة حالياً؟",en:"What is the name of the President of the United States now?"}, options:{ar:["ترامب","هو دائماً نفس الشخص","جورج واشنطن","رئيس مجلس النواب"],en:["Trump","It is always the same","George Washington","The Speaker of the House"]}, correct:0, star:true},
+  {id:39, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"ما اسم نائب رئيس الولايات المتحدة حالياً؟",en:"What is the name of the Vice President of the United States now?"}, options:{ar:["جي دي فانس","لا يتغير أبداً","رئيس المحكمة العليا","أي عضو في مجلس الوزراء"],en:["JD Vance","It never changes","The Chief Justice","Any Cabinet member"]}, correct:0, star:true},
+  {id:40, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"إذا لم يعد الرئيس قادراً على الخدمة، من يصبح رئيساً؟",en:"If the president can no longer serve, who becomes president?"}, options:{ar:["نائب الرئيس","رئيس مجلس النواب","وزير الخارجية","رئيس المحكمة العليا"],en:["The Vice President (of the United States)","The Speaker of the House","The Secretary of State","The Chief Justice"]}, correct:0, star:false},
+  {id:41, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"اذكر سلطة واحدة من سلطات الرئيس.",en:"Name one power of the president."}, options:{ar:["يوقّع مشاريع القوانين لتصبح قوانين / ينقض القوانين / القائد الأعلى / يعيّن القضاة الفيدراليين","يكتب كل القوانين وحده","يخدم في الكونغرس في نفس الوقت","يعزل قضاة المحكمة العليا متى شاء"],en:["Signs bills into law / Vetoes bills / Commander in Chief / Appoints federal judges","Writes all laws alone","Serves in Congress at the same time","Removes Supreme Court justices at will"]}, correct:0, star:false},
+  {id:42, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"من هو القائد الأعلى للقوات المسلحة الأمريكية؟",en:"Who is Commander in Chief of the U.S. military?"}, options:{ar:["الرئيس","وزير الدفاع فقط","أعلى جنرال رتبة","رئيس مجلس النواب"],en:["The President (of the United States)","The Secretary of Defense only","The highest-ranking general","The Speaker of the House"]}, correct:0, star:false},
+  {id:43, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"من يوقّع مشاريع القوانين لتصبح قوانين؟",en:"Who signs bills to become laws?"}, options:{ar:["الرئيس","رئيس مجلس النواب","رئيس المحكمة العليا","زعيم الأغلبية في مجلس الشيوخ"],en:["The President (of the United States)","The Speaker of the House","The Chief Justice","The Senate Majority Leader"]}, correct:0, star:false},
+  {id:44, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"من ينقض مشاريع القوانين؟",en:"Who vetoes bills?"}, options:{ar:["الرئيس","الكونغرس","المحكمة العليا","نائب الرئيس"],en:["The President (of the United States)","Congress","The Supreme Court","The Vice President"]}, correct:0, star:true},
+  {id:45, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"من يعيّن القضاة الفيدراليين؟",en:"Who appoints federal judges?"}, options:{ar:["الرئيس","الكونغرس وحده","الولايات","الشعب بالتصويت المباشر"],en:["The President (of the United States)","Congress alone","The states","The people by popular vote"]}, correct:0, star:false},
+  {id:46, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"للفرع التنفيذي أجزاء كثيرة. اذكر واحداً.",en:"The executive branch has many parts. Name one."}, options:{ar:["الرئيس / مجلس الوزراء / الإدارات والوكالات الفيدرالية","المحكمة العليا فقط","الكونغرس فقط","حكام الولايات"],en:["President / Cabinet / Federal departments and agencies","Only the Supreme Court","Only Congress","State governors"]}, correct:0, star:false},
+  {id:47, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"ماذا يفعل مجلس وزراء الرئيس؟",en:"What does the President’s Cabinet do?"}, options:{ar:["يقدّم المشورة للرئيس","يكتب القوانين","يفصل في القضايا","ينتخب الرئيس"],en:["Advises the President (of the United States)","Writes laws","Decides court cases","Elects the President"]}, correct:0, star:false},
+  {id:48, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"ما هما منصبان على مستوى مجلس الوزراء؟",en:"What are two Cabinet-level positions?"}, options:{ar:["وزير الخارجية / وزير الخزانة / النائب العام / وزير الدفاع (أمثلة)","عضو مجلس الشيوخ والنائب","الحاكم والعمدة","رئيس المحكمة العليا والقاضي المساعد"],en:["Secretary of State / Secretary of the Treasury / Attorney General / Secretary of Defense (examples)","Senator and Representative","Governor and Mayor","Chief Justice and Associate Justice"]}, correct:0, star:false},
+  {id:49, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"لماذا يُعدّ المجمع الانتخابي مهماً؟",en:"Why is the Electoral College important?"}, options:{ar:["يقرر من يُنتخب رئيساً / يوفّر تسوية بين الانتخاب الشعبي واختيار الكونغرس","ينتخب أعضاء مجلس الشيوخ","يختار قضاة المحكمة العليا","هو احتفالي فقط"],en:["It decides who is elected president / provides a compromise between popular election and congressional selection","It elects senators","It chooses Supreme Court justices","It is only ceremonial"]}, correct:0, star:false},
+  {id:50, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"ما هو جزء واحد من الفرع القضائي؟",en:"What is one part of the judicial branch?"}, options:{ar:["المحكمة العليا / المحاكم الفيدرالية","الكونغرس","مجلس الوزراء","المجمع الانتخابي"],en:["Supreme Court / Federal Courts","Congress","The Cabinet","The Electoral College"]}, correct:0, star:false},
+  {id:51, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"ماذا يفعل الفرع القضائي؟",en:"What does the judicial branch do?"}, options:{ar:["يراجع القوانين / يفسّر القوانين / يحل النزاعات / يقرر إذا كان القانون يخالف الدستور","يكتب قوانين جديدة","يقود الجيش","يجمع الضرائب"],en:["Reviews laws / Explains laws / Resolves disputes / Decides if a law goes against the Constitution","Writes new laws","Commands the military","Collects taxes"]}, correct:0, star:false},
+  {id:52, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"ما هي أعلى محكمة في الولايات المتحدة؟",en:"What is the highest court in the United States?"}, options:{ar:["المحكمة العليا","محكمة الاستئناف","المحكمة الجزئية","المحكمة العليا للولاية"],en:["Supreme Court","Circuit Court","District Court","State Supreme Court"]}, correct:0, star:true},
+  {id:53, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"كم مقعداً في المحكمة العليا؟",en:"How many seats are on the Supreme Court?"}, options:{ar:["تسعة (9)","سبعة (7)","اثنا عشر (12)","خمسة عشر (15)"],en:["Nine (9)","Seven (7)","Twelve (12)","Fifteen (15)"]}, correct:0, star:false},
+  {id:54, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"كم قاضياً من قضاة المحكمة العليا يُحتاج عادةً للبت في قضية؟",en:"How many Supreme Court justices are usually needed to decide a case?"}, options:{ar:["خمسة (5)","تسعة (9)","ثلاثة (3)","سبعة (7)"],en:["Five (5)","Nine (9)","Three (3)","Seven (7)"]}, correct:0, star:false},
+  {id:55, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"كم مدة خدمة قضاة المحكمة العليا؟",en:"How long do Supreme Court justices serve?"}, options:{ar:["مدى الحياة / تعيين مدى الحياة / حتى التقاعد","أربع سنوات","ست سنوات","عشر سنوات"],en:["(For) life / Lifetime appointment / (Until) retirement","Four years","Six years","Ten years"]}, correct:0, star:false},
+  {id:56, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"قضاة المحكمة العليا يخدمون مدى الحياة. لماذا؟",en:"Supreme Court justices serve for life. Why?"}, options:{ar:["ليكونوا مستقلين (عن السياسة) / للحد من التأثير السياسي الخارجي","حتى يصبحوا أثرياء جداً","لأنه أسهل في الإدارة","كان تقليداً بريطانياً"],en:["To be independent (of politics) / To limit outside (political) influence","So they can become very wealthy","Because it is easier to manage","It was a British tradition"]}, correct:0, star:false},
+  {id:57, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"من هو رئيس المحكمة العليا حالياً؟",en:"Who is the Chief Justice of the United States now?"}, options:{ar:["جون روبرتس","هو دائماً نفس الشخص","الرئيس يختار واحداً جديداً كل سنة","لا يوجد رئيس للمحكمة العليا"],en:["John Roberts","It is always the same person","The President chooses a new one every year","There is no Chief Justice"]}, correct:0, star:false},
+  {id:58, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"اذكر سلطة واحدة تكون للحكومة الفيدرالية فقط.",en:"Name one power that is only for the federal government."}, options:{ar:["طبع النقود الورقية / سك العملات / إعلان الحرب / عقد المعاهدات","إصدار رخص القيادة","إدارة المدارس العامة","الموافقة على التخطيط المحلي"],en:["Print paper money / Mint coins / Declare war / Make treaties","Issue driver’s licenses","Run public schools","Approve local zoning"]}, correct:0, star:false},
+  {id:59, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"اذكر سلطة واحدة تكون للولايات فقط.",en:"Name one power that is only for the states."}, options:{ar:["توفير التعليم / توفير الحماية (الشرطة) / إصدار رخصة القيادة","طبع النقود","إعلان الحرب","عقد معاهدات مع دول أخرى"],en:["Provide schooling and education / Provide protection (police) / Give a driver’s license","Print money","Declare war","Make treaties with other countries"]}, correct:0, star:false},
+  {id:60, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"ما هو الغرض من التعديل العاشر؟",en:"What is the purpose of the 10th Amendment?"}, options:{ar:["ينص على أن السلطات غير الممنوحة للحكومة الفيدرالية تعود للولايات أو للشعب","ألغى العبودية","أعطى المرأة حق التصويت","أسس ضريبة الدخل"],en:["(It states that the) powers not given to the federal government belong to the states or to the people","It abolished slavery","It gave women the right to vote","It established the income tax"]}, correct:0, star:false},
+  {id:61, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"من هو حاكم ولايتك حالياً؟",en:"Who is the governor of your state now?"}, options:{ar:["مايك برون","الرئيس","نائب الرئيس","رئيس مجلس النواب"],en:["Mike Braun","The President","The Vice President","The Speaker of the House"]}, correct:0, star:true},
+  {id:62, section:{ar:"نظام الحكومة",en:"System of Government"}, q:{ar:"ما هي عاصمة ولايتك؟",en:"What is the capital of your state?"}, options:{ar:["انديانابولس","واشنطن العاصمة لكل الولايات","نيويورك","تتغير كل سنة"],en:["Indianapolis","Washington, D.C. for every state","New York City","It changes every year"]}, correct:0, star:false},
+
+  // 63-72 Rights and Responsibilities
+  {id:63, section:{ar:"الحقوق والمسؤوليات",en:"Rights and Responsibilities"}, q:{ar:"هناك أربعة تعديلات في الدستور حول من يمكنه التصويت. صف واحداً منها.",en:"There are four amendments to the U.S. Constitution about who can vote. Describe one of them."}, options:{ar:["المواطنون من سن 18 فما فوق يمكنهم التصويت / لا يجب دفع ضريبة اقتراع للتصويت / أي مواطن يمكنه التصويت / المواطن الذكر من أي عرق يمكنه التصويت","فقط ملاك العقارات يمكنهم التصويت","فقط الرجال فوق 30 يمكنهم التصويت","يجب دفع ضريبة للتصويت"],en:["Citizens eighteen (18) and older can vote / You don’t have to pay a poll tax to vote / Any citizen can vote / A male citizen of any race can vote","Only property owners can vote","Only men over 30 can vote","You must pay a tax to vote"]}, correct:0, star:false},
+  {id:64, section:{ar:"الحقوق والمسؤوليات",en:"Rights and Responsibilities"}, q:{ar:"من يمكنه التصويت في الانتخابات الفيدرالية، والترشح لمنصب فيدرالي، والخدمة في هيئة محلفين؟",en:"Who can vote in federal elections, run for federal office, and serve on a jury in the United States?"}, options:{ar:["المواطنون / مواطنو الولايات المتحدة","أي شخص يعيش في الولايات المتحدة","المواطنون بالمولد فقط","المقيمون الدائمون القانونيون"],en:["Citizens / U.S. citizens","Anyone living in the United States","Only natural-born citizens","Legal permanent residents"]}, correct:0, star:false},
+  {id:65, section:{ar:"الحقوق والمسؤوليات",en:"Rights and Responsibilities"}, q:{ar:"ما هي ثلاثة حقوق لكل من يعيش في الولايات المتحدة؟",en:"What are three rights of everyone living in the United States?"}, options:{ar:["حرية التعبير / الكلام / التجمع / الدين / حق حمل السلاح","الحق في منزل مجاني / سيارة مجانية / طعام مجاني","حق التصويت فقط","لا حقوق لغير المواطنين"],en:["Freedom of expression / speech / assembly / religion / right to bear arms","Right to a free house / free car / free food","Only the right to vote","No rights for non-citizens"]}, correct:0, star:false},
+  {id:66, section:{ar:"الحقوق والمسؤوليات",en:"Rights and Responsibilities"}, q:{ar:"ماذا نُظهر الولاء له عندما نقول قسم الولاء؟",en:"What do we show loyalty to when we say the Pledge of Allegiance?"}, options:{ar:["الولايات المتحدة / العلم","الرئيس","الحزب السياسي الحاكم","حكومة الولاية فقط"],en:["The United States / The flag","The President","The political party in power","The state government only"]}, correct:0, star:true},
+  {id:67, section:{ar:"الحقوق والمسؤوليات",en:"Rights and Responsibilities"}, q:{ar:"اذكر وعدين يقطعهما المواطنون الجدد في قسم الولاء.",en:"Name two promises that new citizens make in the Oath of Allegiance."}, options:{ar:["التخلي عن الولاء لدول أخرى / الدفاع عن الدستور / طاعة القوانين / الخدمة في الجيش إذا لزم / الولاء للولايات المتحدة","عدم مغادرة الولايات المتحدة أبداً / عدم دفع الضرائب","دعم حزب سياسي واحد فقط","رفض الخدمة في هيئة المحلفين"],en:["Give up loyalty to other countries / Defend the Constitution / Obey the laws / Serve in the military if needed / Be loyal to the United States","Never leave the United States / Pay no taxes","Support only one political party","Refuse to serve on a jury"]}, correct:0, star:false},
+  {id:68, section:{ar:"الحقوق والمسؤوليات",en:"Rights and Responsibilities"}, q:{ar:"كيف يمكن للناس أن يصبحوا مواطنين أمريكيين؟",en:"How can people become United States citizens?"}, options:{ar:["الولادة في الولايات المتحدة / التجنّس / اكتساب الجنسية","شراء الجنسية / الفوز في يانصيب فقط","فقط بالولادة لوالدين مواطنين","بالعيش سنة واحدة فقط"],en:["Be born in the United States / Naturalize / Derive citizenship","Buy citizenship / Win a lottery only","Only by being born to two citizen parents","By living in the U.S. for one year"]}, correct:0, star:false},
+  {id:69, section:{ar:"الحقوق والمسؤوليات",en:"Rights and Responsibilities"}, q:{ar:"ما هما مثالان على المشاركة المدنية في الولايات المتحدة؟",en:"What are two examples of civic participation in the United States?"}, options:{ar:["التصويت / الترشح لمنصب / الانضمام لحزب سياسي / المساعدة في حملة / الاتصال بالمسؤولين","تجنب دفع الضرائب / عدم التصويت أبداً","مشاهدة الأخبار فقط","رفض واجب المحلفين"],en:["Vote / Run for office / Join a political party / Help with a campaign / Contact elected officials","Avoid paying taxes / Never vote","Only watch the news","Refuse jury duty"]}, correct:0, star:false},
+  {id:70, section:{ar:"الحقوق والمسؤوليات",en:"Rights and Responsibilities"}, q:{ar:"ما هي طريقة واحدة يمكن للأمريكيين أن يخدموا بها بلدهم؟",en:"What is one way Americans can serve their country?"}, options:{ar:["التصويت / دفع الضرائب / طاعة القانون / الخدمة في الجيش / الترشح لمنصب","فقط بأن يصبحوا مشهورين","بمغادرة البلاد","بتجاهل الانتخابات"],en:["Vote / Pay taxes / Obey the law / Serve in the military / Run for office","Only by becoming a celebrity","By leaving the country","By ignoring elections"]}, correct:0, star:false},
+  {id:71, section:{ar:"الحقوق والمسؤوليات",en:"Rights and Responsibilities"}, q:{ar:"لماذا من المهم دفع الضرائب الفيدرالية؟",en:"Why is it important to pay federal taxes?"}, options:{ar:["مطلوب بموجب القانون / الجميع يدفع لتمويل الحكومة الفيدرالية / مطلوب بموجب التعديل 16 / واجب مدني","اختياري لمعظم الناس","الأغنياء فقط يجب أن يدفعوا","الضرائب للولايات فقط"],en:["Required by law / All people pay to fund the federal government / Required by the 16th Amendment / Civic duty","It is optional for most people","Only the rich must pay","Taxes are only for state governments"]}, correct:0, star:false},
+  {id:72, section:{ar:"الحقوق والمسؤوليات",en:"Rights and Responsibilities"}, q:{ar:"من المهم أن يسجّل جميع الرجال من 18 إلى 25 في الخدمة الانتقائية. اذكر سبباً واحداً.",en:"It is important for all men age 18 through 25 to register for the Selective Service. Name one reason why."}, options:{ar:["مطلوب بموجب القانون / واجب مدني / يجعل التجنيد عادلاً إذا لزم","للمتطوعين فقط","النساء أيضاً يسجّلن بنفس الطريقة","لم يعد مطلوباً"],en:["Required by law / Civic duty / Makes the draft fair, if needed","It is only for volunteers","Women must also register the same way","It is no longer required"]}, correct:0, star:false},
+
+  // 73-89 Colonial + Independence
+  {id:73, section:{ar:"الفترة الاستعمارية والاستقلال",en:"Colonial Period and Independence"}, q:{ar:"جاء المستعمرون إلى أمريكا لأسباب كثيرة. اذكر واحداً.",en:"The colonists came to America for many reasons. Name one."}, options:{ar:["الحرية / الحرية السياسية / الحرية الدينية / الفرصة الاقتصادية / الهروب من الاضطهاد","للبحث عن الذهب فقط","لأن بريطانيا أجبرتهم","لبدء ملكية"],en:["Freedom / Political liberty / Religious freedom / Economic opportunity / Escape persecution","To find gold only","Because Britain forced them","To start a monarchy"]}, correct:0, star:false},
+  {id:74, section:{ar:"الفترة الاستعمارية والاستقلال",en:"Colonial Period and Independence"}, q:{ar:"من عاش في أمريكا قبل وصول الأوروبيين؟",en:"Who lived in America before the Europeans arrived?"}, options:{ar:["الهنود الأمريكيون / الأمريكيون الأصليون","الفايكنغ فقط","لا أحد","المستوطنون الإسبان فقط"],en:["American Indians / Native Americans","Only Vikings","No one","Spanish settlers only"]}, correct:0, star:true},
+  {id:75, section:{ar:"الفترة الاستعمارية والاستقلال",en:"Colonial Period and Independence"}, q:{ar:"أي مجموعة من الناس أُخذت وبيعت كعبيد؟",en:"What group of people was taken and sold as slaves?"}, options:{ar:["الأفارقة / أناس من أفريقيا","الأوروبيون فقط","الآسيويون فقط","الأمريكيون الأصليون فقط"],en:["Africans / People from Africa","Europeans only","Asians only","Native Americans only"]}, correct:0, star:false},
+  {id:76, section:{ar:"الفترة الاستعمارية والاستقلال",en:"Colonial Period and Independence"}, q:{ar:"أي حرب خاضها الأمريكيون للفوز بالاستقلال عن بريطانيا؟",en:"What war did the Americans fight to win independence from Britain?"}, options:{ar:["الثورة الأمريكية / الحرب الثورية / حرب الاستقلال","الحرب الأهلية","حرب 1812","الحرب الفرنسية والهندية"],en:["American Revolution / Revolutionary War / War for Independence","Civil War","War of 1812","French and Indian War"]}, correct:0, star:false},
+  {id:77, section:{ar:"الفترة الاستعمارية والاستقلال",en:"Colonial Period and Independence"}, q:{ar:"اذكر سبباً واحداً لإعلان الأمريكيين الاستقلال عن بريطانيا.",en:"Name one reason why the Americans declared independence from Britain."}, options:{ar:["ضرائب مرتفعة / الضرائب دون تمثيل / جنود بريطانيون في منازل الأمريكيين / حفلة شاي بوسطن / قانون الطوابع","أرادوا ملكاً","كرهوا الديمقراطية","كانت بريطانيا ضعيفة جداً"],en:["High taxes / Taxation without representation / British soldiers stayed in Americans’ houses / Boston Tea Party / Stamp Act","They wanted a king","They disliked democracy","Britain was too weak"]}, correct:0, star:false},
+  {id:78, section:{ar:"الفترة الاستعمارية والاستقلال",en:"Colonial Period and Independence"}, q:{ar:"من كتب إعلان الاستقلال؟",en:"Who wrote the Declaration of Independence?"}, options:{ar:["(توماس) جيفرسون","جورج واشنطن","بنجامين فرانكلين","جون آدامز"],en:["(Thomas) Jefferson","George Washington","Benjamin Franklin","John Adams"]}, correct:0, star:true},
+  {id:79, section:{ar:"الفترة الاستعمارية والاستقلال",en:"Colonial Period and Independence"}, q:{ar:"متى اعتُمد إعلان الاستقلال؟",en:"When was the Declaration of Independence adopted?"}, options:{ar:["4 يوليو 1776","4 يوليو 1787","4 يوليو 1789","4 يوليو 1812"],en:["July 4, 1776","July 4, 1787","July 4, 1789","July 4, 1812"]}, correct:0, star:false},
+  {id:80, section:{ar:"الفترة الاستعمارية والاستقلال",en:"Colonial Period and Independence"}, q:{ar:"كان للثورة الأمريكية أحداث مهمة كثيرة. اذكر واحداً.",en:"The American Revolution had many important events. Name one."}, options:{ar:["معركة بنكر هيل / إعلان الاستقلال / عبور واشنطن لنهر ديلاوير / معركة ساراتوغا / معركة يوركتاون","إعلان التحرير","شراء لويزيانا","قصف بيرل هاربر"],en:["(Battle of) Bunker Hill / Declaration of Independence / Washington Crossing the Delaware / (Battle of) Saratoga / (Battle of) Yorktown","The Emancipation Proclamation","The Louisiana Purchase","The bombing of Pearl Harbor"]}, correct:0, star:false},
+  {id:81, section:{ar:"الفترة الاستعمارية والاستقلال",en:"Colonial Period and Independence"}, q:{ar:"كان هناك 13 ولاية أصلية. سمِّ خمساً.",en:"There were 13 original states. Name five."}, options:{ar:["نيو هامبشاير، ماساتشوستس، رود آيلاند، كونيتيكت، نيويورك (أو غيرها من الـ13)","كاليفورنيا، تكساس، فلوريدا، ألاسكا، هاواي","ولايات نيو إنجلاند فقط","الولايات الجنوبية فقط"],en:["New Hampshire, Massachusetts, Rhode Island, Connecticut, New York (or others from the 13)","California, Texas, Florida, Alaska, Hawaii","Only the New England states","Only the Southern states"]}, correct:0, star:false},
+  {id:82, section:{ar:"الفترة الاستعمارية والاستقلال",en:"Colonial Period and Independence"}, q:{ar:"أي وثيقة تأسيسية كُتبت عام 1787؟",en:"What founding document was written in 1787?"}, options:{ar:["الدستور (الأمريكي)","إعلان الاستقلال","مواد الاتحاد","وثيقة الحقوق"],en:["(U.S.) Constitution","Declaration of Independence","Articles of Confederation","Bill of Rights"]}, correct:0, star:false},
+  {id:83, section:{ar:"الفترة الاستعمارية والاستقلال",en:"Colonial Period and Independence"}, q:{ar:"دعمت الأوراق الفيدرالية إقرار الدستور الأمريكي. سمِّ أحد كتّابها.",en:"The Federalist Papers supported the passage of the U.S. Constitution. Name one of the writers."}, options:{ar:["(جيمس) ماديسون / (ألكسندر) هاميلتون / (جون) جاي / بوبليوس","توماس جيفرسون","جورج واشنطن","بنجامين فرانكلين"],en:["(James) Madison / (Alexander) Hamilton / (John) Jay / Publius","Thomas Jefferson","George Washington","Benjamin Franklin"]}, correct:0, star:false},
+  {id:84, section:{ar:"الفترة الاستعمارية والاستقلال",en:"Colonial Period and Independence"}, q:{ar:"لماذا كانت الأوراق الفيدرالية مهمة؟",en:"Why were the Federalist Papers important?"}, options:{ar:["ساعدت الناس على فهم الدستور / دعمت إقرار الدستور","أعلنت الاستقلال","أنهت العبودية","أنشأت أول حزب سياسي"],en:["They helped people understand the (U.S.) Constitution / They supported passing the Constitution","They declared independence","They ended slavery","They created the first political party"]}, correct:0, star:false},
+  {id:85, section:{ar:"الفترة الاستعمارية والاستقلال",en:"Colonial Period and Independence"}, q:{ar:"بنجامين فرانكلين مشهور بأشياء كثيرة. اذكر واحداً.",en:"Benjamin Franklin is famous for many things. Name one."}, options:{ar:["أسس أول مكتبات عامة مجانية / أول مدير بريد عام / ساعد في كتابة إعلان الاستقلال / مخترع / دبلوماسي أمريكي","أول رئيس","كتب الدستور وحده","قاد الجيش القاري"],en:["Founded the first free public libraries / First Postmaster General / Helped write the Declaration of Independence / Inventor / U.S. diplomat","First President","Wrote the Constitution alone","Led the Continental Army"]}, correct:0, star:false},
+  {id:86, section:{ar:"الفترة الاستعمارية والاستقلال",en:"Colonial Period and Independence"}, q:{ar:"جورج واشنطن مشهور بأشياء كثيرة. اذكر واحداً.",en:"George Washington is famous for many things. Name one."}, options:{ar:["«أبو الوطن» / أول رئيس للولايات المتحدة / جنرال الجيش القاري / رئيس المؤتمر الدستوري","كتب إعلان الاستقلال","اخترع المصباح","قاد حركة الحقوق المدنية"],en:["“Father of Our Country” / First president of the United States / General of the Continental Army / President of the Constitutional Convention","Wrote the Declaration of Independence","Invented the light bulb","Led the civil rights movement"]}, correct:0, star:true},
+  {id:87, section:{ar:"الفترة الاستعمارية والاستقلال",en:"Colonial Period and Independence"}, q:{ar:"توماس جيفرسون مشهور بأشياء كثيرة. اذكر واحداً.",en:"Thomas Jefferson is famous for many things. Name one."}, options:{ar:["كاتب إعلان الاستقلال / الرئيس الثالث / ضاعف حجم الولايات المتحدة (شراء لويزيانا) / أول وزير خارجية","أول رئيس","قائد الجيش القاري","اخترع الهاتف"],en:["Writer of the Declaration of Independence / Third president / Doubled the size of the United States (Louisiana Purchase) / First Secretary of State","First President","Commander of the Continental Army","Invented the telephone"]}, correct:0, star:false},
+  {id:88, section:{ar:"الفترة الاستعمارية والاستقلال",en:"Colonial Period and Independence"}, q:{ar:"جيمس ماديسون مشهور بأشياء كثيرة. اذكر واحداً.",en:"James Madison is famous for many things. Name one."}, options:{ar:["«أبو الدستور» / الرئيس الرابع / الرئيس خلال حرب 1812 / أحد كتّاب الأوراق الفيدرالية","أول رئيس","كتب إعلان التحرير","قاد الثورة الأمريكية"],en:["“Father of the Constitution” / Fourth president / President during the War of 1812 / One of the writers of the Federalist Papers","First President","Wrote the Emancipation Proclamation","Led the American Revolution"]}, correct:0, star:false},
+  {id:89, section:{ar:"الفترة الاستعمارية والاستقلال",en:"Colonial Period and Independence"}, q:{ar:"ألكسندر هاميلتون مشهور بأشياء كثيرة. اذكر واحداً.",en:"Alexander Hamilton is famous for many things. Name one."}, options:{ar:["أول وزير خزانة / أحد كتّاب الأوراق الفيدرالية / ساعد في تأسيس البنك الأول للولايات المتحدة","الرئيس الثالث","رئيس المحكمة العليا","كتب إعلان الاستقلال"],en:["First Secretary of the Treasury / One of the writers of the Federalist Papers / Helped establish the First Bank of the United States","Third President","Chief Justice","Wrote the Declaration of Independence"]}, correct:0, star:false},
+
+  // 90-99 1800s
+  {id:90, section:{ar:"القرن التاسع عشر",en:"1800s"}, q:{ar:"أي إقليم اشترته الولايات المتحدة من فرنسا عام 1803؟",en:"What territory did the United States buy from France in 1803?"}, options:{ar:["إقليم لويزيانا / لويزيانا","ألاسكا","تكساس","فلوريدا"],en:["Louisiana Territory / Louisiana","Alaska","Texas","Florida"]}, correct:0, star:false},
+  {id:91, section:{ar:"القرن التاسع عشر",en:"1800s"}, q:{ar:"اذكر حرباً واحدة خاضتها الولايات المتحدة في القرن التاسع عشر.",en:"Name one war fought by the United States in the 1800s."}, options:{ar:["حرب 1812 / الحرب المكسيكية الأمريكية / الحرب الأهلية / الحرب الإسبانية الأمريكية","الحرب العالمية الأولى","الحرب العالمية الثانية","حرب فيتنام"],en:["War of 1812 / Mexican-American War / Civil War / Spanish-American War","World War I","World War II","Vietnam War"]}, correct:0, star:false},
+  {id:92, section:{ar:"القرن التاسع عشر",en:"1800s"}, q:{ar:"سمِّ الحرب الأمريكية بين الشمال والجنوب.",en:"Name the U.S. war between the North and the South."}, options:{ar:["الحرب الأهلية","الحرب الثورية","حرب 1812","الحرب الفرنسية والهندية"],en:["The Civil War","The Revolutionary War","The War of 1812","The French and Indian War"]}, correct:0, star:false},
+  {id:93, section:{ar:"القرن التاسع عشر",en:"1800s"}, q:{ar:"كان للحرب الأهلية أحداث مهمة كثيرة. اذكر واحداً.",en:"The Civil War had many important events. Name one."}, options:{ar:["معركة فورت سمتر / إعلان التحرير / معركة غيتيسبيرغ / الاستسلام في أبوماكس / اغتيال لينكولن","حفلة شاي بوسطن","توقيع الدستور","شراء لويزيانا"],en:["(Battle of) Fort Sumter / Emancipation Proclamation / (Battle of) Gettysburg / (Surrender at) Appomattox / Lincoln was assassinated","The Boston Tea Party","The signing of the Constitution","The Louisiana Purchase"]}, correct:0, star:false},
+  {id:94, section:{ar:"القرن التاسع عشر",en:"1800s"}, q:{ar:"أبراهام لينكولن مشهور بأشياء كثيرة. اذكر واحداً.",en:"Abraham Lincoln is famous for many things. Name one."}, options:{ar:["حرّر العبيد (إعلان التحرير) / أنقذ الاتحاد / قاد الولايات المتحدة خلال الحرب الأهلية / الرئيس السادس عشر / ألقى خطاب غيتيسبيرغ","أول رئيس","كتب الدستور","اخترع الهاتف"],en:["Freed the slaves (Emancipation Proclamation) / Saved (or preserved) the Union / Led the United States during the Civil War / 16th president / Delivered the Gettysburg Address","First President","Wrote the Constitution","Invented the telephone"]}, correct:0, star:true},
+  {id:95, section:{ar:"القرن التاسع عشر",en:"1800s"}, q:{ar:"ماذا فعل إعلان التحرير؟",en:"What did the Emancipation Proclamation do?"}, options:{ar:["حرّر العبيد / حرّر العبيد في الاتحاد الكونفدرالي / حرّر العبيد في معظم الولايات الجنوبية","أنهى الحرب الأهلية فوراً","أعطى المرأة حق التصويت","أنشأ ضريبة الدخل"],en:["Freed the slaves / Freed slaves in the Confederacy / Freed slaves in most Southern states","Ended the Civil War immediately","Gave women the right to vote","Created the income tax"]}, correct:0, star:false},
+  {id:96, section:{ar:"القرن التاسع عشر",en:"1800s"}, q:{ar:"أي حرب أمريكية أنهت العبودية؟",en:"What U.S. war ended slavery?"}, options:{ar:["الحرب الأهلية","الحرب الثورية","الحرب العالمية الأولى","حرب 1812"],en:["The Civil War","The Revolutionary War","World War I","The War of 1812"]}, correct:0, star:false},
+  {id:97, section:{ar:"القرن التاسع عشر",en:"1800s"}, q:{ar:"أي تعديل يقول إن جميع الأشخاص المولودين أو المتجنسين في الولايات المتحدة هم مواطنون؟",en:"What amendment says all persons born or naturalized in the United States, and subject to the jurisdiction thereof, are U.S. citizens?"}, options:{ar:["التعديل الرابع عشر","التعديل الثالث عشر","التعديل الخامس عشر","التعديل التاسع عشر"],en:["14th Amendment","13th Amendment","15th Amendment","19th Amendment"]}, correct:0, star:false},
+  {id:98, section:{ar:"القرن التاسع عشر",en:"1800s"}, q:{ar:"متى حصل جميع الرجال على حق التصويت؟",en:"When did all men get the right to vote?"}, options:{ar:["بعد الحرب الأهلية / خلال إعادة الإعمار / بالتعديل الخامس عشر / 1870","عام 1776","عام 1920","عام 1965 فقط"],en:["After the Civil War / During Reconstruction / (With the) 15th Amendment / 1870","In 1776","In 1920","In 1965 only"]}, correct:0, star:false},
+  {id:99, section:{ar:"القرن التاسع عشر",en:"1800s"}, q:{ar:"سمِّ إحدى قائدات حركة حقوق المرأة في القرن التاسع عشر.",en:"Name one leader of the women’s rights movement in the 1800s."}, options:{ar:["سوزان ب. أنتوني / إليزابيث كادي ستانتون / سوجورنر تروث / هارييت تابمان / لوكريشيا موت / لوسي ستون","مارثا واشنطن","دولي ماديسون","إلينور روزفلت"],en:["Susan B. Anthony / Elizabeth Cady Stanton / Sojourner Truth / Harriet Tubman / Lucretia Mott / Lucy Stone","Martha Washington","Dolley Madison","Eleanor Roosevelt"]}, correct:0, star:false},
+
+  // 100-118 Recent History
+  {id:100, section:{ar:"التاريخ الأمريكي الحديث",en:"Recent American History"}, q:{ar:"اذكر حرباً واحدة خاضتها الولايات المتحدة في القرن العشرين.",en:"Name one war fought by the United States in the 1900s."}, options:{ar:["الحرب العالمية الأولى / الحرب العالمية الثانية / الحرب الكورية / حرب فيتنام / حرب الخليج","الحرب الأهلية","الحرب الثورية","حرب 1812"],en:["World War I / World War II / Korean War / Vietnam War / (Persian) Gulf War","Civil War","Revolutionary War","War of 1812"]}, correct:0, star:false},
+  {id:101, section:{ar:"التاريخ الأمريكي الحديث",en:"Recent American History"}, q:{ar:"لماذا دخلت الولايات المتحدة الحرب العالمية الأولى؟",en:"Why did the United States enter World War I?"}, options:{ar:["لأن ألمانيا هاجمت سفن أمريكية (مدنية) / لدعم قوى الحلفاء / لمعارضة القوى المركزية","للكسب أراضٍ في أوروبا","بسبب الهجوم على بيرل هاربر","لوقف انتشار الشيوعية"],en:["Because Germany attacked U.S. (civilian) ships / To support the Allied Powers / To oppose the Central Powers","To gain new territory in Europe","Because of the attack on Pearl Harbor","To stop the spread of communism"]}, correct:0, star:false},
+  {id:102, section:{ar:"التاريخ الأمريكي الحديث",en:"Recent American History"}, q:{ar:"متى حصلت جميع النساء على حق التصويت؟",en:"When did all women get the right to vote?"}, options:{ar:["1920 / بعد الحرب العالمية الأولى / بالتعديل التاسع عشر","1776","1870","1965"],en:["1920 / After World War I / (With the) 19th Amendment","1776","1870","1965"]}, correct:0, star:false},
+  {id:103, section:{ar:"التاريخ الأمريكي الحديث",en:"Recent American History"}, q:{ar:"ما هو الكساد الكبير؟",en:"What was the Great Depression?"}, options:{ar:["أطول ركود اقتصادي في التاريخ الحديث","حرب بين الولايات","فترة ازدهار كبير","اسم معركة شهيرة"],en:["Longest economic recession in modern history","A war between the states","A period of great prosperity","The name of a famous battle"]}, correct:0, star:false},
+  {id:104, section:{ar:"التاريخ الأمريكي الحديث",en:"Recent American History"}, q:{ar:"متى بدأ الكساد الكبير؟",en:"When did the Great Depression start?"}, options:{ar:["الانهيار الكبير (1929) / انهيار سوق الأسهم عام 1929","1914","1941","1963"],en:["The Great Crash (1929) / Stock market crash of 1929","1914","1941","1963"]}, correct:0, star:false},
+  {id:105, section:{ar:"التاريخ الأمريكي الحديث",en:"Recent American History"}, q:{ar:"من كان رئيساً خلال الكساد الكبير والحرب العالمية الثانية؟",en:"Who was president during the Great Depression and World War II?"}, options:{ar:["(فرانكلين) روزفلت","أبراهام لينكولن","وودرو ويلسون","هاري ترومان"],en:["(Franklin) Roosevelt","Abraham Lincoln","Woodrow Wilson","Harry Truman"]}, correct:0, star:false},
+  {id:106, section:{ar:"التاريخ الأمريكي الحديث",en:"Recent American History"}, q:{ar:"لماذا دخلت الولايات المتحدة الحرب العالمية الثانية؟",en:"Why did the United States enter World War II?"}, options:{ar:["(قصف) بيرل هاربر / هاجم اليابانيون بيرل هاربر / لدعم قوى الحلفاء / لمعارضة قوى المحور","لوقف انتشار الشيوعية في كوريا","بسبب غرق السفينة لوسيتانيا","للفوز بالاستقلال عن بريطانيا"],en:["(Bombing of) Pearl Harbor / Japanese attacked Pearl Harbor / To support the Allied Powers / To oppose the Axis Powers","To stop the spread of communism in Korea","Because of the sinking of the Lusitania","To gain independence from Britain"]}, correct:0, star:false},
+  {id:107, section:{ar:"التاريخ الأمريكي الحديث",en:"Recent American History"}, q:{ar:"دوايت أيزنهاور مشهور بأشياء كثيرة. اذكر واحداً.",en:"Dwight Eisenhower is famous for many things. Name one."}, options:{ar:["جنرال خلال الحرب العالمية الثانية / رئيس في نهاية (خلال) الحرب الكورية / الرئيس الـ34 / وقّع قانون الطرق السريعة لعام 1956","كتب إعلان الاستقلال","أول رجل على القمر","قاد حركة الحقوق المدنية"],en:["General during World War II / President at the end of (during) the Korean War / 34th president / Signed the Federal-Aid Highway Act of 1956","Wrote the Declaration of Independence","First man on the moon","Led the civil rights movement"]}, correct:0, star:false},
+  {id:108, section:{ar:"التاريخ الأمريكي الحديث",en:"Recent American History"}, q:{ar:"من كان المنافس الرئيسي للولايات المتحدة خلال الحرب الباردة؟",en:"Who was the United States’ main rival during the Cold War?"}, options:{ar:["الاتحاد السوفيتي / الاتحاد السوفياتي / روسيا","ألمانيا","اليابان","الصين فقط"],en:["Soviet Union / USSR / Russia","Germany","Japan","China only"]}, correct:0, star:false},
+  {id:109, section:{ar:"التاريخ الأمريكي الحديث",en:"Recent American History"}, q:{ar:"خلال الحرب الباردة، ما كان أحد المخاوف الرئيسية للولايات المتحدة؟",en:"During the Cold War, what was one main concern of the United States?"}, options:{ar:["الشيوعية / الحرب النووية","سعر النفط فقط","الهجرة من أوروبا","معيار الذهب"],en:["Communism / Nuclear war","The price of oil only","Immigration from Europe","The gold standard"]}, correct:0, star:false},
+  {id:110, section:{ar:"التاريخ الأمريكي الحديث",en:"Recent American History"}, q:{ar:"لماذا دخلت الولايات المتحدة الحرب الكورية؟",en:"Why did the United States enter the Korean War?"}, options:{ar:["لوقف انتشار الشيوعية","للكسب أراضٍ","بسبب بيرل هاربر","لدعم القوى المركزية"],en:["To stop the spread of communism","To gain territory","Because of Pearl Harbor","To support the Central Powers"]}, correct:0, star:false},
+  {id:111, section:{ar:"التاريخ الأمريكي الحديث",en:"Recent American History"}, q:{ar:"لماذا دخلت الولايات المتحدة حرب فيتنام؟",en:"Why did the United States enter the Vietnam War?"}, options:{ar:["لوقف انتشار الشيوعية","للكسب موارد نفطية","بسبب الهجوم على بيرل هاربر","لتحرير المستعمرات الأمريكية"],en:["To stop the spread of communism","To gain oil resources","Because of the attack on Pearl Harbor","To free the American colonies"]}, correct:0, star:false},
+  {id:112, section:{ar:"التاريخ الأمريكي الحديث",en:"Recent American History"}, q:{ar:"ماذا فعلت حركة الحقوق المدنية؟",en:"What did the civil rights movement do?"}, options:{ar:["ناضلت لإنهاء التمييز العنصري","أنهت الحرب الباردة","أنشأت نظام الطرق السريعة بين الولايات","أسست الأمم المتحدة"],en:["Fought to end racial discrimination","Ended the Cold War","Created the Interstate Highway System","Established the United Nations"]}, correct:0, star:false},
+  {id:113, section:{ar:"التاريخ الأمريكي الحديث",en:"Recent American History"}, q:{ar:"مارتن لوثر كينغ الابن مشهور بأشياء كثيرة. اذكر واحداً.",en:"Martin Luther King, Jr. is famous for many things. Name one."}, options:{ar:["ناضل من أجل الحقوق المدنية / عمل من أجل المساواة لجميع الأمريكيين / عمل حتى لا يُحكم على الناس بلون بشرتهم بل بمحتوى شخصيتهم","أول رئيس أمريكي من أصل أفريقي","اخترع المصباح","قاد الثورة الأمريكية"],en:["Fought for civil rights / Worked for equality for all Americans / Worked so people would “not be judged by the color of their skin, but by the content of their character”","First African American President","Invented the light bulb","Led the American Revolution"]}, correct:0, star:true},
+  {id:114, section:{ar:"التاريخ الأمريكي الحديث",en:"Recent American History"}, q:{ar:"لماذا دخلت الولايات المتحدة حرب الخليج؟",en:"Why did the United States enter the Persian Gulf War?"}, options:{ar:["لإجبار الجيش العراقي على الخروج من الكويت","لوقف انتشار الشيوعية","بسبب بيرل هاربر","للفوز بالاستقلال"],en:["To force the Iraqi military from Kuwait","To stop the spread of communism","Because of Pearl Harbor","To gain independence"]}, correct:0, star:false},
+  {id:115, section:{ar:"التاريخ الأمريكي الحديث",en:"Recent American History"}, q:{ar:"ما الحدث الكبير الذي وقع في 11 سبتمبر 2001 في الولايات المتحدة؟",en:"What major event happened on September 11, 2001 in the United States?"}, options:{ar:["هاجم إرهابيون الولايات المتحدة / استولى إرهابيون على طائرات واصطدموا بها بمركز التجارة العالمي والبنتاغون","انهيار سوق الأسهم","نهاية الحرب الباردة","إعصار كاترينا"],en:["Terrorists attacked the United States / Terrorists took over planes and crashed them into the World Trade Center and the Pentagon","The stock market crash","The end of the Cold War","Hurricane Katrina"]}, correct:0, star:true},
+  {id:116, section:{ar:"التاريخ الأمريكي الحديث",en:"Recent American History"}, q:{ar:"اذكر نزاعاً عسكرياً أمريكياً واحداً بعد هجمات 11 سبتمبر 2001.",en:"Name one U.S. military conflict after the September 11, 2001 attacks."}, options:{ar:["الحرب العالمية على الإرهاب / حرب أفغانستان / حرب العراق","الحرب الأهلية","الحرب العالمية الثانية","الحرب الثورية"],en:["(Global) War on Terror / War in Afghanistan / War in Iraq","The Civil War","World War II","The Revolutionary War"]}, correct:0, star:false},
+  {id:117, section:{ar:"التاريخ الأمريكي الحديث",en:"Recent American History"}, q:{ar:"سمِّ قبيلة هندية أمريكية واحدة في الولايات المتحدة.",en:"Name one American Indian tribe in the United States."}, options:{ar:["شيروكي / نافاجو / سيوكس / أباتشي / تشيبوا / تشوكتاو / كريك / هوبي / إيروكوا / بويبلو / سيمينول (وغيرهم كثير)","أسماء دول أوروبية فقط","لا توجد قبائل معترف بها","قبائل من كندا فقط"],en:["Cherokee / Navajo / Sioux / Apache / Chippewa / Choctaw / Creek / Hopi / Iroquois / Pueblo / Seminole (and many others)","Only the names of European countries","There are no recognized tribes","Only tribes from Canada"]}, correct:0, star:false},
+  {id:118, section:{ar:"التاريخ الأمريكي الحديث",en:"Recent American History"}, q:{ar:"اذكر مثالاً واحداً على ابتكار أمريكي.",en:"Name one example of an American innovation."}, options:{ar:["المصباح الكهربائي / السيارة / ناطحات السحاب / الطائرة / خط التجميع / الهبوط على القمر / الدائرة المتكاملة","آلة الطباعة (أوروبية)","البارود (صيني)","العجلة"],en:["Light bulb / Automobile / Skyscrapers / Airplane / Assembly line / Landing on the moon / Integrated circuit (IC)","The printing press (European)","Gunpowder (Chinese)","The wheel"]}, correct:0, star:false},
+
+  // 119-128 Symbols and Holidays
+  {id:119, section:{ar:"الرموز والأعياد",en:"Symbols and Holidays"}, q:{ar:"ما هي عاصمة الولايات المتحدة؟",en:"What is the capital of the United States?"}, options:{ar:["واشنطن العاصمة","نيويورك","فيلادلفيا","بوسطن"],en:["Washington, D.C.","New York City","Philadelphia","Boston"]}, correct:0, star:false},
+  {id:120, section:{ar:"الرموز والأعياد",en:"Symbols and Holidays"}, q:{ar:"أين يقع تمثال الحرية؟",en:"Where is the Statue of Liberty?"}, options:{ar:["نيويورك (الميناء) / جزيرة الحرية","واشنطن العاصمة","ميناء بوسطن","سان فرانسيسكو"],en:["New York (Harbor) / Liberty Island","Washington, D.C.","Boston Harbor","San Francisco"]}, correct:0, star:false},
+  {id:121, section:{ar:"الرموز والأعياد",en:"Symbols and Holidays"}, q:{ar:"لماذا يوجد على العلم 13 شريطاً؟",en:"Why does the flag have 13 stripes?"}, options:{ar:["لأن هناك 13 مستعمرة أصلية / الشرائط تمثل المستعمرات الأصلية","لأن هناك 13 قاضياً","لأنه يبدو جميلاً","واحد لكل تعديل"],en:["(Because there were) 13 original colonies / (Because the stripes) represent the original colonies","Because there are 13 justices","Because it looks nice","One for each amendment"]}, correct:0, star:true},
+  {id:122, section:{ar:"الرموز والأعياد",en:"Symbols and Holidays"}, q:{ar:"لماذا يوجد على العلم 50 نجمة؟",en:"Why does the flag have 50 stars?"}, options:{ar:["لأن هناك نجمة لكل ولاية / كل نجمة تمثل ولاية / هناك 50 ولاية","لأن هناك 50 مستعمرة أصلية","واحدة لكل رئيس","رقم عشوائي"],en:["(Because there is) one star for each state / each star represents a state / there are 50 states","Because there were 50 original colonies","One for each president","It is a random number"]}, correct:0, star:false},
+  {id:123, section:{ar:"الرموز والأعياد",en:"Symbols and Holidays"}, q:{ar:"ما اسم النشيد الوطني؟",en:"What is the name of the national anthem?"}, options:{ar:["العلم المرصع بالنجوم (The Star-Spangled Banner)","أمريكا الجميلة","حفظ الله أمريكا","بلدي أنتِ"],en:["The Star-Spangled Banner","America the Beautiful","God Bless America","My Country, ’Tis of Thee"]}, correct:0, star:false},
+  {id:124, section:{ar:"الرموز والأعياد",en:"Symbols and Holidays"}, q:{ar:"كان شعار الأمة الأول «E Pluribus Unum». ماذا يعني؟",en:"The Nation’s first motto was “E Pluribus Unum.” What does that mean?"}, options:{ar:["من الكثيرين واحد / نصبح جميعاً واحداً","الحرية للجميع","في الله نثق","العدالة للجميع"],en:["Out of many, one / We all become one","Liberty for all","In God We Trust","Justice for all"]}, correct:0, star:false},
+  {id:125, section:{ar:"الرموز والأعياد",en:"Symbols and Holidays"}, q:{ar:"ما هو يوم الاستقلال؟",en:"What is Independence Day?"}, options:{ar:["عيد للاحتفال باستقلال الولايات المتحدة (عن بريطانيا) / عيد ميلاد البلاد","يوم لتكريم المحاربين القدامى","يوم لزراعة الأشجار","بداية العام الدراسي"],en:["A holiday to celebrate U.S. independence (from Britain) / The country’s birthday","A day to honor veterans","A day to plant trees","The start of the school year"]}, correct:0, star:false},
+  {id:126, section:{ar:"الرموز والأعياد",en:"Symbols and Holidays"}, q:{ar:"سمِّ ثلاثة أعياد وطنية أمريكية.",en:"Name three national U.S. holidays."}, options:{ar:["رأس السنة / يوم مارتن لوثر كينغ / يوم الرؤساء / يوم الذكرى / جونتينث / يوم الاستقلال / يوم العمال / يوم المحاربين القدامى / عيد الشكر / عيد الميلاد","عيد الميلاد والفصح فقط","الهالووين وعيد الحب","أعياد الولايات فقط"],en:["New Year’s Day / Martin Luther King, Jr. Day / Presidents Day / Memorial Day / Juneteenth / Independence Day / Labor Day / Veterans Day / Thanksgiving / Christmas","Only Christmas and Easter","Halloween and Valentine’s Day","Only state holidays"]}, correct:0, star:true},
+  {id:127, section:{ar:"الرموز والأعياد",en:"Symbols and Holidays"}, q:{ar:"ما هو يوم الذكرى (Memorial Day)؟",en:"What is Memorial Day?"}, options:{ar:["عيد لتكريم الجنود الذين ماتوا في الخدمة العسكرية","عيد لتكريم المحاربين القدامى الأحياء","بداية الصيف فقط","عيد للتسوق"],en:["A holiday to honor soldiers who died in military service","A holiday to honor living veterans","The start of summer only","A shopping holiday"]}, correct:0, star:false},
+  {id:128, section:{ar:"الرموز والأعياد",en:"Symbols and Holidays"}, q:{ar:"ما هو يوم المحاربين القدامى (Veterans Day)؟",en:"What is Veterans Day?"}, options:{ar:["عيد لتكريم الأشخاص في الجيش الأمريكي / الذين خدموا في الجيش الأمريكي","عيد فقط لمن ماتوا","نفس يوم الذكرى","يوم للاحتفال بالاستقلال"],en:["A holiday to honor people in the (U.S.) military / people who have served (in the U.S. military)","A holiday only for those who died","The same as Memorial Day","A day to celebrate independence"]}, correct:0, star:false}
+];
+
+// ========== APP LOGIC ==========
+let lang = "ar";
+let mode = null;
+let sectionFilter = null;
+let quiz = null;
+
+const $ = (s, el = document) => el.querySelector(s);
+const app = document.getElementById("app");
+const t = (key) => STR[lang][key] || key;
+
+function setLang(l) {
+  lang = l;
+  document.documentElement.lang = l;
+  document.documentElement.dir = l === "ar" ? "rtl" : "ltr";
+  render();
+}
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function prepareQuestion(q) {
+  const opts = q.options[lang].slice();
+  const correctText = opts[0];
+  const order = shuffle([0, 1, 2, 3]);
+  return {
+    id: q.id,
+    section: q.section[lang],
+    q: q.q[lang],
+    options: order.map(i => opts[i]),
+    correct: order.indexOf(0),
+    star: q.star,
+    correctText
+  };
+}
+
+function startQuiz(selectedMode, section = null) {
+  mode = selectedMode;
+  sectionFilter = section;
+  let pool = QUESTIONS.slice();
+  if (selectedMode === "starred") pool = pool.filter(q => q.star);
+  else if (selectedMode === "section" && section) pool = pool.filter(q => q.section.en === section || q.section.ar === section);
+
+  let count = 10;
+  if (selectedMode === "random20") count = 20;
+  if (selectedMode === "starred") count = Math.min(10, pool.length);
+  if (selectedMode === "full") count = pool.length;
+  if (selectedMode === "section") count = Math.min(15, pool.length);
+
+  quiz = {
+    qs: shuffle(pool).slice(0, count).map(prepareQuestion),
+    i: 0,
+    score: 0,
+    locked: false,
+    answered: []
+  };
+  render();
+}
+
+function render() {
+  if (!quiz) return renderHome();
+  if (quiz.i >= quiz.qs.length) return renderResult();
+  return renderQuiz();
+}
+
+function renderHome() {
+  const sections = [...new Set(QUESTIONS.map(q => q.section[lang]))];
+  app.innerHTML = `
+    <div class="wrap">
+      <div class="card">
+        <div class="lang-switch">
+          <button class="lang-btn ${lang==='ar'?'active':''}" data-l="ar">العربية</button>
+          <button class="lang-btn ${lang==='en'?'active':''}" data-l="en">English</button>
+        </div>
+        <div class="logo">🇺🇸 ${t('title')}</div>
+        <p class="tag">${t('subtitle')}</p>
+        <div class="modes">
+          <div class="mode" data-mode="random20">
+            <h3>🎯 ${t('modeReal')}</h3>
+            <p>${t('modeRealDesc')}</p>
+          </div>
+          <div class="mode" data-mode="starred">
+            <h3>⭐ ${t('modeStar')}</h3>
+            <p>${t('modeStarDesc')}</p>
+          </div>
+          <div class="mode" data-mode="full">
+            <h3>📚 ${t('modeFull')}</h3>
+            <p>${t('modeFullDesc')}</p>
+          </div>
+          <div class="mode" data-mode="section">
+            <h3>📖 ${t('modeSection')}</h3>
+            <p>${t('modeSectionDesc')}</p>
+          </div>
+        </div>
+        <div id="sectionPick" style="display:none; margin-top:14px;">
+          <p style="margin-bottom:8px; font-weight:700; color:var(--gold);">${t('chooseSection')}</p>
+          <div class="modes" id="sectionList"></div>
+        </div>
+        <div class="hint">
+          <strong>${t('note')}</strong>
+          <a href="https://www.uscis.gov/citizenship/testupdates" target="_blank" style="color:var(--cyan);"> ${t('noteLink')}</a>
+        </div>
+        <p class="footer-note">${t('footer')}</p></br><p> Mohamed Abujamal</P>
+      </div>
+    </div>
+  `;
+  document.querySelectorAll(".lang-btn").forEach(b => b.onclick = () => setLang(b.dataset.l));
+  document.querySelectorAll(".mode").forEach(el => {
+    el.onclick = () => {
+      const m = el.dataset.mode;
+      if (m === "section") {
+        $("#sectionPick").style.display = "block";
+        const list = $("#sectionList");
+        list.innerHTML = sections.map(s => `
+          <div class="mode" data-section="${s}">
+            <h3>${s}</h3>
+            <p>${QUESTIONS.filter(q => q.section[lang] === s).length} ${lang==='ar'?'سؤالاً':'questions'}</p>
+          </div>
+        `).join("");
+        list.querySelectorAll(".mode").forEach(sEl => {
+          sEl.onclick = () => startQuiz("section", sEl.dataset.section);
+        });
+      } else {
+        startQuiz(m);
+      }
+    };
+  });
+}
+
+function renderQuiz() {
+  const item = quiz.qs[quiz.i];
+  const pct = Math.round((quiz.i / quiz.qs.length) * 100);
+  app.innerHTML = `
+    <header class="topbar">
+      <div class="brand">🇺🇸 ${t('title')}</div>
+      <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+        <span class="badge">${quiz.score} ${t('correct')}</span>
+        <button class="btn tiny ghost" id="quit" style="box-shadow:none; border-color:rgba(255,255,255,.3);">${t('exit')}</button>
+      </div>
+    </header>
+    <main class="page">
+      <div class="progress-info">
+        <strong>${t('question')} ${quiz.i + 1} ${t('of')} ${quiz.qs.length}</strong>
+        ${item.star ? `<span class="badge">${t('starred')}</span>` : ""}
+      </div>
+      <div class="bar"><span style="width:${pct}%"></span></div>
+      <div class="qcard">
+        <div style="font-size:.8rem; color:#d4c4f5; margin-bottom:8px;">${item.section}</div>
+        <h2>${item.q}</h2>
+        <div class="options">
+          ${item.options.map((opt, idx) => `<button class="option" data-i="${idx}">${opt}</button>`).join("")}
+        </div>
+        <div class="feedback" id="fb"></div>
+      </div>
+    </main>
+  `;
+  $("#quit").onclick = () => {
+    if (confirm(t('confirmExit'))) { quiz = null; render(); }
+  };
+  document.querySelectorAll(".option").forEach(btn => {
+    btn.onclick = () => pick(+btn.dataset.i);
+  });
+}
+
+function pick(idx) {
+  if (quiz.locked) return;
+  quiz.locked = true;
+  const item = quiz.qs[quiz.i];
+  const buttons = [...document.querySelectorAll(".option")];
+  buttons.forEach(b => b.disabled = true);
+  const fb = $("#fb");
+  if (idx === item.correct) {
+    buttons[idx].classList.add("correct");
+    quiz.score++;
+    fb.textContent = t('correctMsg');
+    fb.style.color = "var(--ok)";
+  } else {
+    buttons[idx].classList.add("wrong");
+    buttons[item.correct].classList.add("correct");
+    fb.innerHTML = `${t('wrongMsg')}<br><small style="color:#d4c4f5">${item.correctText}</small>`;
+    fb.style.color = "var(--gold)";
+  }
+  quiz.answered.push({ id: item.id, correct: idx === item.correct });
+  setTimeout(() => { quiz.i++; quiz.locked = false; render(); }, 1100);
+}
+
+function renderResult() {
+  const total = quiz.qs.length;
+  const pct = Math.round((quiz.score / total) * 100);
+  let pass = false, message = "";
+  if (mode === "random20") {
+    pass = quiz.score >= 12;
+    message = pass ? t('passedSim') : t('needMore');
+  } else if (mode === "starred") {
+    pass = quiz.score >= 6;
+    message = pass ? t('passed65') : t('need6');
+  } else {
+    pass = pct >= 70;
+    message = pass ? t('greatJob') : t('reviewMissed');
+  }
+  const stars = pct >= 90 ? "★★★" : pct >= 70 ? "★★" : pct >= 50 ? "★" : "•";
+
+  app.innerHTML = `
+    <header class="topbar">
+      <div class="brand">🇺🇸 ${t('title')}</div>
+      <button class="btn tiny ghost" id="home" style="box-shadow:none; border-color:rgba(255,255,255,.3);">${t('home')}</button>
+    </header>
+    <main class="page">
+      <div class="qcard result">
+        <div style="font-size:2.5rem; margin-bottom:6px;">${pass ? "🎉" : "💪"}</div>
+        <h2 style="font-size:1.5rem; margin-bottom:6px;">${pass ? t('wellDone') : t('keepGoing')}</h2>
+        <div style="font-size:1.7rem; color:var(--gold); margin:8px 0;">${stars}</div>
+        <p style="font-size:1.25rem; margin:10px 0;">${t('score')}: <strong>${quiz.score} / ${total}</strong> (${pct}%)</p>
+        <p style="color:#d4c4f5; margin-bottom:16px;">${message}</p>
+        <div class="stats">
+          <div class="stat"><b>${quiz.score}</b>${t('correctCount')}</div>
+          <div class="stat"><b>${total - quiz.score}</b>${t('missedCount')}</div>
+          <div class="stat"><b>${pct}%</b>${t('accuracy')}</div>
+        </div>
+        <button class="btn ok" id="again">${t('tryAgain')}</button>
+        <button class="btn sec" id="new">${t('differentMode')}</button>
+        <button class="btn ghost" id="review">${t('reviewBtn')}</button>
+      </div>
+      <p class="footer-note">${t('footer')}</p>
+    </main>
+  `;
+  $("#home").onclick = () => { quiz = null; render(); };
+  $("#again").onclick = () => startQuiz(mode, sectionFilter);
+  $("#new").onclick = () => { quiz = null; render(); };
+  $("#review").onclick = () => renderReview();
+}
+
+function renderReview() {
+  const missed = quiz.qs.filter((q, i) => !quiz.answered[i]?.correct);
+  app.innerHTML = `
+    <header class="topbar">
+      <div class="brand">🇺🇸 ${t('reviewTitle')}</div>
+      <button class="btn tiny ghost" id="back" style="box-shadow:none; border-color:rgba(255,255,255,.3);">${t('back')}</button>
+    </header>
+    <main class="page">
+      <h2 style="margin-bottom:16px;">${t('reviewTitle')} (${missed.length})</h2>
+      ${missed.length === 0
+        ? `<p style="color:var(--ok); font-weight:700;">${t('perfect')}</p>`
+        : missed.map(q => `
+          <div class="qcard" style="margin-bottom:14px;">
+            <div style="font-size:.8rem; color:#d4c4f5; margin-bottom:6px;">${q.section} ${q.star ? "★" : ""}</div>
+            <h3 style="font-size:1.08rem; margin-bottom:10px;">${q.q}</h3>
+            <p style="color:var(--ok); font-weight:700;">✅ ${q.correctText}</p>
+          </div>
+        `).join("")
+      }
+      <button class="btn" id="done" style="margin-top:10px;">${t('done')}</button>
+    </main>
+  `;
+  $("#back").onclick = $("#done").onclick = () => renderResult();
+}
+
+// Start in Arabic
+setLang("ar");
+</script>
+</body>
+</html>
